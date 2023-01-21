@@ -1,10 +1,11 @@
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 
 class Member(AbstractBaseUser):
     class Meta:
         db_table = 'member'
+        app_label = 'application'
 
     email = models.EmailField(unique=True, max_length=255)
     password = models.CharField(max_length=60)
@@ -17,3 +18,5 @@ class Member(AbstractBaseUser):
     date_of_update = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
+
+    objects = BaseUserManager()
