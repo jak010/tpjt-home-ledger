@@ -8,7 +8,7 @@ class Member(AbstractBaseUser):
         app_label = 'application'
 
     email = models.EmailField(unique=True, max_length=255)
-    password = models.CharField(max_length=60)
+    password = models.CharField(max_length=72)
 
     is_active = models.BooleanField(default=True)
 
