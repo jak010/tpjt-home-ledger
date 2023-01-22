@@ -4,11 +4,9 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..service import member_service
-
 from src.application.exceptions.member_exception import AlreadyExistMember
-
 from src.config.types import APIResponse
+from ..service import member_service
 
 
 class MemberView(APIView):
