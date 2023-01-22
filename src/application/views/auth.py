@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -8,8 +6,6 @@ from rest_framework_simplejwt.views import (
 )
 
 from ..exceptions import member_exception
-from ..libs import utils
-from ..orm.member import Member
 from ..service import member_service
 
 
