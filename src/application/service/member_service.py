@@ -10,6 +10,7 @@ Member = get_user_model()
 
 
 def create_member(email: str, password: str) -> Member:
+    """ Member 생성하기 """
     try:
         member = Member.objects.create(
             email=email,

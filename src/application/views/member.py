@@ -6,13 +6,20 @@ from rest_framework.views import APIView
 
 from ..service import member_service
 
+from src.application.exceptions.member_exception import AlreadyExistMember
+
+from src.config.types import APIResponse
+
 
 class MemberView(APIView):
     class InputSerializer(serializers.Serializer):
         email = serializers.EmailField()
         password = serializers.CharField()
 
-    def post(self, *args, **kwags):
+    def post(self, *args, **kwags) -> APIResponse[
+        Response,
+        AlreadyExistMember
+    ]:
         """ Member 생성하기 """
         serializer = self.InputSerializer(data=self.request.POST)
         serializer.is_valid(raise_exception=True)
