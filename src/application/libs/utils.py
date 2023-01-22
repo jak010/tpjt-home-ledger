@@ -1,8 +1,8 @@
 import bcrypt
 
 
-def generate_bcrypt_hash(password) -> bytes:
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+def generate_bcrypt_hash(password) -> str:
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 
 def check_password(input_password: str, save_password: bytes) -> bool:

@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src.application.exceptions.member_exception import AlreadyExistMember
-from src.config.types import APIResponse
+from ..exceptions.member_exception import AlreadyExistMember
 from ..service import member_service
+
+if TYPE_CHECKING:
+    from src.config.types import APIResponse
 
 
 class MemberView(APIView):
