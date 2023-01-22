@@ -1,11 +1,12 @@
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from src.application.exceptions import member_exception
-from src.application.service import member_service
+from ...exceptions import member_exception
+from ...service import member_service
 
 
 class ApplicationTokenSerializer(TokenObtainSerializer):
+    default_error_messages = {}
 
     @classmethod
     def get_token(cls, user):
