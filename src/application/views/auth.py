@@ -29,7 +29,7 @@ class LoginView(APIView):
             password=serializer.validated_data['password']
         )
 
-        new_session = member_service.save_token(
+        new_session = member_service.save_session(
             token=utils.generate_token(member=member),
             member=member
         )

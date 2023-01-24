@@ -18,7 +18,7 @@ class AccessTokenCheck(permissions.BasePermission):
 
         decode_token = utils.decode_token(token=access_token)
 
-        member_session = member_service.find_session(
+        member_session = member_service.get_session(
             session_id=decode_token['session_id']
         )
 

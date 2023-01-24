@@ -48,7 +48,8 @@ def login(email: str, password: str) -> Member:
     return member
 
 
-def save_token(token: str, member: Member) -> MemberSession:
+def save_session(token: str, member: Member) -> MemberSession:
+    """ token 정보 저장하기 """
     decode_token = utils.decode_token(token)
 
     new_session = MemberSession.objects.create(
@@ -61,7 +62,8 @@ def save_token(token: str, member: Member) -> MemberSession:
     return new_session
 
 
-def find_session(session_id) -> Optional[MemberSession]:
+def get_session(session_id) -> Optional[MemberSession]:
+    """ session 정보 얻기 """
     try:
         member_session = MemberSession.objects.get(
             session_id=session_id
@@ -70,3 +72,26 @@ def find_session(session_id) -> Optional[MemberSession]:
         raise member_exception.InvalidAccessToken()
 
     return member_session
+
+
+def get_member_by_session(session: MemberSession) -> Member:
+    token = utils.decode_token(session.token)
+
+    try:
+        member = Member.objects.get(
+            email=token['email']
+        )
+    except Member.DoesNotExist:
+        raise member_exception.DoesNotExsitEmail()
+
+    return member
+
+
+def get_member_with_email(email: str) -> Member:
+    try:
+        member = Member.objects.get(email=email)
+
+    except Member.DoesNotExist:
+        raise member_exception.DoesNotExsitEmail()
+
+    return member
