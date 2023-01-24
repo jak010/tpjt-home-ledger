@@ -76,8 +76,12 @@ class AccountBookHistoryDetailView(APIView):
 
         return Response(status=200)
 
-    def delete(self, request, account_book_id, account_book_history_id):
-        """ Account Book History 삭제하기 """
+    def delete(self, request, account_book_id, account_book_history_id) -> APIResponse[
+        Response,
+        account_book_exception.DoesNotExsitAccountHistoryBook,
+        account_book_exception.InActivedAccountbookHistory
+    ]:
+        """ 가계부 내역 삭제하기 """
         account_book = account_book_service.get_account_book_with_pk(
             reference_id=account_book_id
         )

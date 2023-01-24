@@ -25,30 +25,20 @@ class AccountBookView(APIView):
     def get(self, request) -> APIResponse[
         Response
     ]:
+        """ 가계부 목록조회 """
         member = member_service.get_member_by_session(
             session=self.headers['member_session']
         )
 
         account_books = account_book_service.get_account_books(member=member)
 
-        return Response(data=dict(
-            summary=dict(
-                count=len(account_books)
-            ),
-            items=[{
-                'reference_id': account_book.reference_id,
-                'name': account_book.name,
-                'description': account_book.description,
-                'date_of_create': account_book.date_of_create,  # TODO: KST로 시간대 변경 필요함
-                'date_of_update': account_book.date_of_update
-            } for account_book in account_books]
-        ))
+        return Response(data=account_books)
 
     def post(self, request) -> APIResponse[
         Response,
         member_exception.DoesNotExsitEmail
     ]:
-        """ Acount Book 생성하기 """
+        """ 가계부 생성하기 """
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

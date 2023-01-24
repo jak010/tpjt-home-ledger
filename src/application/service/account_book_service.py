@@ -29,9 +29,22 @@ def get_account_book_with_pk(reference_id: int) -> AccountBook:
 
 
 def get_account_books(member: Member):
-    account_book = AccountBook.objects.filter(author=member)
+    account_books = AccountBook.objects.filter(author=member)
 
-    return account_book
+    data = dict(
+        summary=dict(
+            count=len(account_books)
+        ),
+        items=[{
+            'reference_id': account_book.reference_id,
+            'name': account_book.name,
+            'description': account_book.description,
+            'date_of_create': account_book.date_of_create,  # TODO: KST로 시간대 변경 필요함
+            'date_of_update': account_book.date_of_update
+        } for account_book in account_books]
+    )
+
+    return data
 
 
 def get_account_book_with_history(account_book_id: int):
@@ -66,6 +79,7 @@ def create_account_book_history(
         amount: str,
         memo: str,
         account_book: AccountBook) -> AccountBookHistory:
+    """ 가계부 내역 생성하기 """
     new_account_book_history = AccountBookHistory.objects.create(
         amount=amount,
         memo=memo,
