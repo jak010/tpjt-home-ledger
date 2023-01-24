@@ -1,6 +1,6 @@
 import pytest
 
-from src.application.service import member_service
+from application.service import member_service
 
 
 @pytest.fixture

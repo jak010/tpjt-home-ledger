@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from django.db import models
 
-from .member import Member
+from django.contrib.auth import get_user_model
+
+Member = get_user_model()
 
 
 class MemberSession(models.Model):

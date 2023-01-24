@@ -7,7 +7,10 @@ from ..exceptions import member_exception
 from ..libs import utils, define
 
 from datetime import datetime
-from ..models import MemberSession
+
+from ..orm.member_session import MemberSession
+
+# from ..orm.member_session import MemberSession
 
 Member = get_user_model()
 

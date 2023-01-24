@@ -6,7 +6,7 @@ TEST_PASSWORD = "1234"
 def test_generate_bcrypt_hash():
     new_bcrypt = utils.generate_bcrypt_hash(TEST_PASSWORD)
 
-    assert isinstance(new_bcrypt, bytes)
+    assert isinstance(new_bcrypt, str)
 
 
 def test_check_password_success():
