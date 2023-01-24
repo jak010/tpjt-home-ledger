@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from ..exceptions import member_exception, account_book_exception
 
 
-class AccountBookHistoryView(APIView):
+class AccountBookHistoryCreateView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
     class InputSerializer(serializers.Serializer):
@@ -43,7 +43,7 @@ class AccountBookHistoryView(APIView):
         return Response(status=200)
 
 
-class AccountBookHistoryUpdateView(APIView):
+class AccountBookHistoryDetailView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
     class InputSerializer(serializers.Serializer):
