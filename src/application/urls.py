@@ -20,6 +20,8 @@ urlpatterns = [
 
     # Accountbook
     path("account/book", account_book.AccountBookView.as_view(), name="account_book"),
+    path("account/book/<int:account_book_id>",
+         account_book.AccountBookDetailView.as_view(), name="account_book_detail"),
 
     # AccountBookHistory
     path("account/book/<int:account_book_id>/history",

@@ -23,7 +23,8 @@ class AccountBook(models.Model):
 
 class AccountBookHistory(models.Model):
     reference_id = models.AutoField(primary_key=True)
-    account_book = models.ForeignKey(AccountBook, on_delete=models.SET_NULL, null=True)
+    account_book = models.ForeignKey(AccountBook, related_name='history',
+                                     on_delete=models.SET_NULL, null=True)
     is_active = models.BooleanField(default=1)
 
     memo = models.CharField(max_length=128)

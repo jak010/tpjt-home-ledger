@@ -63,3 +63,16 @@ class AccountBookView(APIView):
         )
 
         return Response(status=200)
+
+
+class AccountBookDetailView(APIView):
+    permission_classes = (permission.AccessTokenCheck,)
+
+    def get(self, request, account_book_id) -> APIResponse[
+        Response
+    ]:
+        """ 가계부 상세보기 """
+        account_book_with_history = account_book_service \
+            .get_account_book_with_history(account_book_id)
+
+        return Response(data=account_book_with_history)

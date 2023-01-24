@@ -34,6 +34,34 @@ def get_account_books(member: Member):
     return account_book
 
 
+def get_account_book_with_history(account_book_id: int):
+    # TODO: join 시키는 방법이 있을 듯 하다.
+    account_book = AccountBook.objects.get(reference_id=account_book_id)
+    account_book_history = AccountBookHistory.objects.filter(
+        account_book_id=account_book.reference_id,
+        is_active=1
+    ).all()
+
+    data = dict(
+        account_book=dict(
+            reference_id=account_book.reference_id,
+            name=account_book.name,
+            description=account_book.description,
+            date_of_create=account_book.date_of_create,
+            date_of_update=account_book.date_of_update,
+        ),
+        historys=[{
+            'reference_id': history.reference_id,
+            'amount': history.amount,
+            'memo': history.memo,
+            "date_of_create": history.date_of_create,
+            "date_of_update": history.date_of_update,
+        } for history in account_book_history]
+    )
+
+    return data
+
+
 def create_account_book_history(
         amount: str,
         memo: str,
