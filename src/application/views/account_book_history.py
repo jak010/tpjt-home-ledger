@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import serializers
@@ -7,6 +9,10 @@ from rest_framework import serializers
 from ..libs import permission
 
 from ..service import account_book_service
+
+if TYPE_CHECKING:
+    from src.config.types import APIResponse
+    from ..exceptions import member_exception, account_book_exception
 
 
 class AccountBookHistoryView(APIView):
@@ -16,7 +22,10 @@ class AccountBookHistoryView(APIView):
         memo = serializers.CharField(max_length=256, required=True)
         amount = serializers.CharField(max_length=128, required=True)
 
-    def post(self, request, account_book_id):
+    def post(self, request, account_book_id) -> APIResponse[
+        Response,
+        account_book_exception.DoesNotExsitAccountBook
+    ]:
         """ Acount Book History 생성하기 """
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -41,7 +50,11 @@ class AccountBookHistoryUpdateView(APIView):
         memo = serializers.CharField(max_length=256, required=True)
         amount = serializers.CharField(max_length=128, required=True)
 
-    def put(self, request, account_book_id, account_book_history_id):
+    def put(self, request, account_book_id, account_book_history_id) -> APIResponse[
+        Response,
+        account_book_exception.DoesNotExsitAccountBook,
+        account_book_exception.DoesNotExsitAccountHistoryBook
+    ]:
         """ Acount Book History 수정하기 """
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
