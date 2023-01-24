@@ -30,6 +30,7 @@ class AccountBookHistory(models.Model):
     amount = models.PositiveIntegerField()
 
     date_of_create = models.DateTimeField(auto_now_add=True)
+    date_of_update = models.DateTimeField(auto_now=True)
 
     objects = models.Manager()
 

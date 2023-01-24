@@ -39,3 +39,24 @@ def create_account_book_history(
     )
 
     return new_account_book_history
+
+
+def get_acoount_book_history(reference_id: int) -> AccountBookHistory:
+    """ 가계부 내역 찾기 """
+    try:
+        account_book_history = AccountBookHistory.objects.get(
+            reference_id=reference_id
+        )
+    except AccountBookHistory.DoesNotExist:
+        raise account_book_exception.DoesNotExsitAccountHistoryBook()
+
+    if account_book_history.is_active == 0:
+        raise account_book_exception.DoesNotExsitAccountHistoryBook()
+
+    return account_book_history
+
+
+def update_account_book_history(account_book_history: AccountBookHistory, amount: int, memo: str):
+    account_book_history.amount = amount
+    account_book_history.memo = memo
+    account_book_history.save()

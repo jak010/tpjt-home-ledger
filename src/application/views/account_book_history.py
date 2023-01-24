@@ -32,3 +32,32 @@ class AccountBookHistoryView(APIView):
         )
 
         return Response(status=200)
+
+
+class AccountBookHistoryUpdateView(APIView):
+    permission_classes = (permission.AccessTokenCheck,)
+
+    class InputSerializer(serializers.Serializer):
+        memo = serializers.CharField(max_length=256, required=True)
+        amount = serializers.CharField(max_length=128, required=True)
+
+    def put(self, request, account_book_id, account_book_history_id):
+        """ Acount Book History 수정하기 """
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        account_book = account_book_service.get_account_book_with_pk(
+            reference_id=account_book_id
+        )
+
+        account_book_history = account_book_service.get_acoount_book_history(
+            reference_id=account_book_history_id
+        )
+
+        account_book_service.update_account_book_history(
+            account_book_history=account_book_history,
+            amount=serializer.validated_data['amount'],
+            memo=serializer.validated_data['memo']
+        )
+
+        return Response(status=200)

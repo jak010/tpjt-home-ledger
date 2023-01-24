@@ -23,6 +23,8 @@ urlpatterns = [
 
     # AccountBookHistory
     path("account/book/<int:account_book_id>/history",
-         account_book_history.AccountBookHistoryView.as_view(), name="account_book_history")
+         account_book_history.AccountBookHistoryView.as_view(), name="account_book_history"),
+    path("account/book/<int:account_book_id>/history/<int:account_book_history_id>",
+         account_book_history.AccountBookHistoryUpdateView.as_view(), name="account_book_history_update")
 
 ]
