@@ -28,6 +28,12 @@ def get_account_book_with_pk(reference_id: int) -> AccountBook:
     return account_book
 
 
+def get_account_books(member: Member):
+    account_book = AccountBook.objects.filter(author=member)
+
+    return account_book
+
+
 def create_account_book_history(
         amount: str,
         memo: str,

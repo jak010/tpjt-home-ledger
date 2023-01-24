@@ -8,7 +8,7 @@ Member = get_user_model()
 class AccountBook(models.Model):
     reference_id = models.AutoField(primary_key=True)
 
-    author = models.OneToOneField(Member, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=256)
 
