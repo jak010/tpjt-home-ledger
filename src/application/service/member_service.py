@@ -1,13 +1,12 @@
 from __future__ import annotations
 
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 
 from ..exceptions import member_exception
 from ..libs import utils, define
-
-from datetime import datetime
-
 from ..orm.member_session import MemberSession
 
 # from ..orm.member_session import MemberSession
@@ -36,7 +35,7 @@ def login(email: str, password: str) -> Member:
     except Member.DoesNotExist as e:
         raise member_exception.InvalidCredential()
 
-    if not utils.check_password(password, member.password.encode()):
+    if not utils.check_password(password, member.password):
         raise member_exception.InvalidCredential()
 
     if member.is_active == define.Member.INACTIVE_CODE:
@@ -49,13 +48,13 @@ def login(email: str, password: str) -> Member:
 
 
 def save_token(token: str, member: Member) -> MemberSession:
-    token = utils.decode_token(token)
+    decode_token = utils.decode_token(token)
 
     new_session = MemberSession.objects.create(
-        session_id=token['session_id'],
+        session_id=decode_token['session_id'],
         token=token,
         member=member,
-        expire_date=token['exp'],
-        iat=token['iss']
+        expire_time=decode_token['exp'],
+        iat_time=decode_token['iss']
     )
     return new_session

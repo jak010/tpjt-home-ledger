@@ -1,18 +1,16 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+
 import datetime
+import time
+import uuid
+from typing import TYPE_CHECKING
 
 import bcrypt
-import uuid
-
 import jwt
-from jwt.exceptions import DecodeError
-import time
 from django.conf import settings
 
 if TYPE_CHECKING:
     from ..orm.member import Member
-    from ..libs.types import TokenClaim
 
 
 def generate_bcrypt_hash(password) -> str:
@@ -27,12 +25,12 @@ def check_password(input_password: str, save_password: str) -> bool:
 
 
 def generate_session_id():
-    return str(uuid.uuid4())[0:32]
+    return str(uuid.uuid4())
 
 
 def datetime_to_epoch(day):
     _datetime = datetime.datetime.utcnow() + datetime.timedelta(days=day)
-    return time.mktime(_datetime.timetuple()) * 1000
+    return int(time.mktime(_datetime.timetuple()))
 
 
 def generate_token(member: Member):

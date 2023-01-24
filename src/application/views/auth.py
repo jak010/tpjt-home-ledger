@@ -1,13 +1,11 @@
-from rest_framework import generics
-from rest_framework import permissions
-from rest_framework.response import Response
+from __future__ import annotations
 
 from rest_framework import serializers
-
+from rest_framework.response import Response
 from rest_framework.views import APIView
-from ..service import member_service
 
 from ..libs import utils
+from ..service import member_service
 
 
 class LoginApiView(APIView):
@@ -34,7 +32,7 @@ class LoginApiView(APIView):
             member=member
         )
 
-        return Response(new_session.session_id)
+        return Response()
 
 # class LogOutApiView(generics.GenericAPIView):
 #     serializer_class = LogoutSerializer
