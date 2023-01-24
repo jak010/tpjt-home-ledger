@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Optional, NoReturn
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
@@ -58,3 +59,14 @@ def save_token(token: str, member: Member) -> MemberSession:
         iat_time=decode_token['iss']
     )
     return new_session
+
+
+def find_session(session_id) -> Optional[MemberSession]:
+    try:
+        member_session = MemberSession.objects.get(
+            session_id=session_id
+        )
+    except MemberSession.DoesNotExist:
+        raise member_exception.InvalidAccessToken()
+
+    return member_session

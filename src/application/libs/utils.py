@@ -9,6 +9,8 @@ import bcrypt
 import jwt
 from django.conf import settings
 
+from ..exceptions import member_exception
+
 if TYPE_CHECKING:
     from ..orm.member import Member
 
@@ -24,16 +26,16 @@ def check_password(input_password: str, save_password: str) -> bool:
     )
 
 
-def generate_session_id():
+def generate_session_id() -> str:
     return str(uuid.uuid4())
 
 
-def datetime_to_epoch(day):
+def datetime_to_epoch(day) -> int:
     _datetime = datetime.datetime.utcnow() + datetime.timedelta(days=day)
     return int(time.mktime(_datetime.timetuple()))
 
 
-def generate_token(member: Member):
+def generate_token(member: Member) -> str:
     """ jwt 토큰 생성하기 """
     return jwt.encode(
         payload={
@@ -47,7 +49,7 @@ def generate_token(member: Member):
     )
 
 
-def decode_token(token):
+def decode_token(token) -> dict:
     """ decode token """
     try:
         token = jwt.decode(
@@ -56,6 +58,6 @@ def decode_token(token):
             algorithms='HS256'
         )
     except Exception as e:  # TODO: Token Deode 시 Exception 처리 명시하기
-        print(e)
+        raise member_exception.InvalidAccessToken()
 
     return token

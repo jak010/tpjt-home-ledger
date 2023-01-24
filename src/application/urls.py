@@ -10,8 +10,8 @@ app_name = "application"
 urlpatterns = [
 
     # JWT Auth
-    path('login', auth.LoginApiView.as_view(), name='token_obtain_pair'),
-    # path('logout', auth.LogOutApiView.as_view(), name='token_blacklist'),
+    path('login', auth.LoginView.as_view(), name='login'),
+    path('logout', auth.LogOutView.as_view(), name='logout'),
 
     #  Member
     path("member", member.MemberView.as_view(), name="member"),

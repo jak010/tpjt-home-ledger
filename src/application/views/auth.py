@@ -4,11 +4,13 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from ..libs import permission
+
 from ..libs import utils
 from ..service import member_service
 
 
-class LoginApiView(APIView):
+class LoginView(APIView):
     class InputSerializer(serializers.Serializer):
         email = serializers.EmailField(required=True)
         password = serializers.CharField(required=True)
@@ -32,14 +34,21 @@ class LoginApiView(APIView):
             member=member
         )
 
-        return Response()
+        return Response(
+            data={
+                'access_token': new_session.token,
+                'expire_time': new_session.expire_time,
+                'iat_time': new_session.iat_time
+            }
+        )
 
-# class LogOutApiView(generics.GenericAPIView):
-#     serializer_class = LogoutSerializer
-#     permission_classes = (permissions.AllowAny,)
-#
-#     def post(self, request):
-#         serializer = self.get_serializer(data=request.data)
-#         print(serializer())
-#
-#         return Response(200)
+
+class LogOutView(APIView):
+    permission_classes = (permission.AccessTokenCheck,)
+
+    def delete(self, request):
+        member_session = self.headers['member_session']
+
+        member_session.delete()
+
+        return Response(200)

@@ -16,3 +16,8 @@ class InvalidCredential(APIException):
 class InActiveMember(APIException):
     status_code = 200
     default_detail = "비활성화된 멤버"
+
+
+class InvalidAccessToken(APIException):
+    status_code = 400
+    default_detail = "토큰이 유효하지 않음"
