@@ -51,7 +51,7 @@ def get_acoount_book_history(reference_id: int) -> AccountBookHistory:
         raise account_book_exception.DoesNotExsitAccountHistoryBook()
 
     if account_book_history.is_active == 0:
-        raise account_book_exception.DoesNotExsitAccountHistoryBook()
+        raise account_book_exception.InActivedAccountbookHistory()
 
     return account_book_history
 

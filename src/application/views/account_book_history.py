@@ -53,7 +53,8 @@ class AccountBookHistoryUpdateView(APIView):
     def put(self, request, account_book_id, account_book_history_id) -> APIResponse[
         Response,
         account_book_exception.DoesNotExsitAccountBook,
-        account_book_exception.DoesNotExsitAccountHistoryBook
+        account_book_exception.DoesNotExsitAccountHistoryBook,
+        account_book_exception.InActivedAccountbookHistory
     ]:
         """ Acount Book History 수정하기 """
         serializer = self.InputSerializer(data=request.data)
@@ -72,5 +73,19 @@ class AccountBookHistoryUpdateView(APIView):
             amount=serializer.validated_data['amount'],
             memo=serializer.validated_data['memo']
         )
+
+        return Response(status=200)
+
+    def delete(self, request, account_book_id, account_book_history_id):
+        """ Account Book History 삭제하기 """
+        account_book = account_book_service.get_account_book_with_pk(
+            reference_id=account_book_id
+        )
+
+        account_book_history = account_book_service.get_acoount_book_history(
+            reference_id=account_book_history_id
+        )
+        account_book_history.is_active = 0
+        account_book_history.save()
 
         return Response(status=200)
