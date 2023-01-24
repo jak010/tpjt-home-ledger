@@ -122,7 +122,5 @@ AUTH_USER_MODEL = 'application.Member'
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'config.exception_handler.application_exception_handler',
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+
 }
