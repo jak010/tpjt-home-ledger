@@ -1,5 +1,18 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+import datetime
+
 import bcrypt
 import uuid
+
+import jwt
+from jwt.exceptions import DecodeError
+import time
+from django.conf import settings
+
+if TYPE_CHECKING:
+    from ..orm.member import Member
+    from ..libs.types import TokenClaim
 
 
 def generate_bcrypt_hash(password) -> str:
@@ -15,3 +28,36 @@ def check_password(input_password: str, save_password: bytes) -> bool:
 
 def generate_session_id():
     return str(uuid.uuid4())[0:32]
+
+
+def datetime_to_epoch(day):
+    _datetime = datetime.datetime.utcnow() + datetime.timedelta(days=day)
+    return time.mktime(_datetime.timetuple()) * 1000
+
+
+def generate_token(member: Member):
+    """ jwt 토큰 생성하기 """
+    return jwt.encode(
+        payload={
+            'session_id': generate_session_id(),
+            'email': member.email,
+            'exp': datetime_to_epoch(day=1),
+            'iss': datetime_to_epoch(day=2),
+        },
+        key=settings.SECRET_KEY,
+        algorithm='HS256'
+    )
+
+
+def decode_token(token):
+    """ decode token """
+    try:
+        token = jwt.decode(
+            jwt=token,
+            key=settings.SECRET_KEY,
+            algorithms='HS256'
+        )
+    except Exception as e:  # TODO: Token Deode 시 Exception 처리 명시하기
+        print(e)
+
+    return token

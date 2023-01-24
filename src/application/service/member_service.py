@@ -7,6 +7,7 @@ from ..exceptions import member_exception
 from ..libs import utils, define
 
 from datetime import datetime
+from ..models import MemberSession
 
 Member = get_user_model()
 
@@ -42,3 +43,16 @@ def login(email: str, password: str) -> Member:
     member.save()
 
     return member
+
+
+def save_token(token: str, member: Member) -> MemberSession:
+    token = utils.decode_token(token)
+
+    new_session = MemberSession.objects.create(
+        session_id=token['session_id'],
+        token=token,
+        member=member,
+        expire_date=token['exp'],
+        iat=token['iss']
+    )
+    return new_session
