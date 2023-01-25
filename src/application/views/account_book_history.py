@@ -40,7 +40,7 @@ class AccountBookHistoryCreateView(APIView):
             memo=serializer.validated_data['memo'],
         )
 
-        return Response(status=200)
+        return Response(status=201)
 
 
 class AccountBookHistoryDetailView(APIView):

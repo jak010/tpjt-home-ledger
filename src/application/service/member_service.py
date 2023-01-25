@@ -82,7 +82,7 @@ def get_member_by_session(session: MemberSession) -> Member:
             email=token['email']
         )
     except Member.DoesNotExist:
-        raise member_exception.DoesNotExsitEmail()
+        raise member_exception.InvalidCredential()
 
     return member
 

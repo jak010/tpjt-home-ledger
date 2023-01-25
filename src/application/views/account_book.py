@@ -23,7 +23,8 @@ class AccountBookView(APIView):
         description = serializers.CharField(max_length=256)
 
     def get(self, request) -> APIResponse[
-        Response
+        Response,
+        member_exception.InvalidCredential
     ]:
         """ 가계부 목록조회 """
         member = member_service.get_member_by_session(
@@ -36,7 +37,7 @@ class AccountBookView(APIView):
 
     def post(self, request) -> APIResponse[
         Response,
-        member_exception.DoesNotExsitEmail
+        member_exception.InvalidCredential
     ]:
         """ 가계부 생성하기 """
         serializer = self.InputSerializer(data=request.data)
@@ -52,7 +53,7 @@ class AccountBookView(APIView):
             member=member
         )
 
-        return Response(status=200)
+        return Response(status=201)
 
 
 class AccountBookDetailView(APIView):
