@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from ..orm.member import Member
-from ..orm.account_book import AccountBook, AccountBookHistory
+from ..orm.accountbook import AccountBook, AccountBookHistory
 
-from ..exceptions import account_book_exception
+from ..exceptions import accountbook_exception
+
+from ..libs.define import AccountHistoryStatus
 
 
 def create_account_book(name: str, description: str, member: Member) -> AccountBook:
@@ -23,7 +25,7 @@ def get_account_book_with_pk(reference_id: int) -> AccountBook:
             reference_id=reference_id
         )
     except AccountBook.DoesNotExist as e:
-        raise account_book_exception.DoesNotExsitAccountBook()
+        raise accountbook_exception.DoesNotExsitAccountBook()
 
     return account_book
 
@@ -47,9 +49,13 @@ def get_account_books(member: Member):
     return data
 
 
-def get_account_book_with_history(account_book_id: int):
+def get_account_book_with_history(accountbook_id: int):
     # TODO: join 시키는 방법이 있을 듯 하다.
-    account_book = AccountBook.objects.get(reference_id=account_book_id)
+    try:
+        account_book = AccountBook.objects.get(reference_id=accountbook_id)
+    except AccountBook.DoesNotExist as e:
+        raise accountbook_exception.DoesNotExsitAccountBook()
+
     account_book_history = AccountBookHistory.objects.filter(
         account_book_id=account_book.reference_id,
         is_active=1
@@ -96,10 +102,10 @@ def get_acoount_book_history(reference_id: int) -> AccountBookHistory:
             reference_id=reference_id
         )
     except AccountBookHistory.DoesNotExist:
-        raise account_book_exception.DoesNotExsitAccountHistoryBook()
+        raise accountbook_exception.DoesNotExsitAccountHistoryBook()
 
-    if account_book_history.is_active == 0:
-        raise account_book_exception.InActivedAccountbookHistory()
+    if account_book_history.is_active == AccountHistoryStatus.Inactive.value:
+        raise accountbook_exception.InActivedAccountbookHistory()
 
     return account_book_history
 

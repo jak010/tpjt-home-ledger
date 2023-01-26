@@ -18,7 +18,7 @@ class AccountBook(models.Model):
     objects = models.Manager()
 
     class Meta:
-        db_table = "account_book"
+        db_table = "accountbook"
 
 
 class AccountBookHistory(models.Model):
@@ -36,4 +36,4 @@ class AccountBookHistory(models.Model):
     objects = models.Manager()
 
     class Meta:
-        db_table = "account_book_history"
+        db_table = "accountbook_history"

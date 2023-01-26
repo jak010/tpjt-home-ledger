@@ -5,9 +5,6 @@ from typing import List, Union
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException
 
-from typing import TypeVar, Generic, Union
+from typing import TypeVar, Generic, Union, Final
 
-AE = TypeVar('AE', bound=APIException)
-R = TypeVar('R', bound=Response)
-
-APIResponse = Union[R, Union[List[AE]]]
+APIResponse = Union[Response, APIException]

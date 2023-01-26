@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from ..libs import permission
 
-from ..service import account_book_service, member_service
+from ..service import accountbook_service, member_service
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
@@ -31,7 +31,7 @@ class AccountBookView(APIView):
             session=self.headers['member_session']
         )
 
-        account_books = account_book_service.get_account_books(member=member)
+        account_books = accountbook_service.get_account_books(member=member)
 
         return Response(data=account_books)
 
@@ -47,7 +47,7 @@ class AccountBookView(APIView):
             session=self.headers['member_session']
         )
 
-        account_book_service.create_account_book(
+        accountbook_service.create_account_book(
             name=serializer.validated_data['name'],
             description=serializer.validated_data['description'],
             member=member
@@ -59,11 +59,11 @@ class AccountBookView(APIView):
 class AccountBookDetailView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
-    def get(self, request, account_book_id) -> APIResponse[
+    def get(self, request, accountbook_id) -> APIResponse[
         Response
     ]:
         """ 가계부 상세보기 """
-        account_book_with_history = account_book_service \
-            .get_account_book_with_history(account_book_id)
+        account_book_with_history = accountbook_service \
+            .get_account_book_with_history(accountbook_id)
 
         return Response(data=account_book_with_history)
