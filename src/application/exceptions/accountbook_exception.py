@@ -14,3 +14,8 @@ class DoesNotExsitAccountHistoryBook(APIException):
 class InActivedAccountbookHistory(APIException):
     status_code = 400
     default_detail = "삭제된 가계부 내역"
+
+
+class AlreadyActivedAccountbookHistory(APIException):
+    status_code = 406
+    default_detail = "삭제 상태가 아님"

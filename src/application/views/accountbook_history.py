@@ -2,17 +2,21 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from rest_framework import exceptions
+from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers
 
+from ..exceptions import accountbook_exception
 from ..libs import permission
-
-from ..service import accountbook_service
+from ..libs.define import AccountHistoryStatus
+from ..service import (
+    member_service,
+    accountbook_service
+)
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
-    from ..exceptions import member_exception, accountbook_exception
 
 
 class AccountBookHistoryCreateView(APIView):
@@ -93,3 +97,29 @@ class AccountBookHistoryDetailView(APIView):
         account_book_history.save()
 
         return Response(status=200)
+
+
+class AccountBookHistoryRestoreView(APIView):
+    permission_classes = (permission.AccessTokenCheck,)
+
+    def put(self, request, accountbook_id, accountbook_history_id) -> APIResponse[Response]:
+        account_book = accountbook_service.get_account_book_with_pk(
+            reference_id=accountbook_id
+        )
+        member = member_service.get_member_by_session(
+            session=self.headers['member_session']
+        )
+
+        if account_book.author.id != member.id:
+            raise exceptions.PermissionDenied()
+
+        account_book_history = accountbook_service.get_account_book_history_without_status(
+            reference_id=accountbook_history_id
+        )
+        if account_book_history.is_active == AccountHistoryStatus.active.value:
+            raise accountbook_exception.AlreadyActivedAccountbookHistory()
+
+        account_book_history.is_active = AccountHistoryStatus.active.value
+        account_book_history.save()
+
+        return Response(200)
