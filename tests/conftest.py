@@ -18,6 +18,6 @@ def db_no_rollback(request, django_db_setup, django_db_blocker):
 @pytest.fixture()
 def member_on():
     member_service.create_member(
-        email="test99@test.com",
+        email="test9999@test.com",
         password="1234"
     )

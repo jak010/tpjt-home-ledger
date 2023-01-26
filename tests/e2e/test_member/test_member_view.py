@@ -10,7 +10,7 @@ def test_member_create_api(client):
     response = client.post(
         member_view,
         data={
-            'email': "test@test.com",
+            'email': "test9998@test.com",
             'password': '1234'
         }
     )
@@ -23,7 +23,7 @@ def test_member_create_api_with_duplicate_check(client, member_on):
     response = client.post(
         member_view,
         data={
-            'email': "test99@test.com",
+            'email': "test9999@test.com",
             'password': '1234'
         }
     )
