@@ -69,13 +69,13 @@ def get_account_book_with_history(accountbook_id: int):
             date_of_create=account_book.date_of_create,
             date_of_update=account_book.date_of_update,
         ),
-        historys=[{
-            'reference_id': history.reference_id,
-            'amount': history.amount,
-            'memo': history.memo,
-            "date_of_create": history.date_of_create,
-            "date_of_update": history.date_of_update,
-        } for history in account_book_history]
+        historys=[dict(
+            reference_id=history.reference_id,
+            amount=history.amount,
+            memo=history.memo,
+            date_of_create=history.date_of_create,
+            date_of_update=history.date_of_update
+        ) for history in account_book_history]
     )
 
     return data

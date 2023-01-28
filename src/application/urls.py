@@ -21,7 +21,7 @@ urlpatterns = [
     # Accountbook
     path("accountbooks", accountbook.AccountsBookView.as_view(), name="accountbooks"),
     path("accountbooks/<int:accountbook_id>",
-         accountbook.AccountBookDetailView.as_view(), name="account_book_detail"),
+         accountbook.AccountBookDetailView.as_view(), name="accountbooks_detail"),
 
     # AccountBookHistory
     path("accountbooks/<int:accountbook_id>/history",
