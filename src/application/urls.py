@@ -25,7 +25,7 @@ urlpatterns = [
 
     # AccountBookHistory
     path("accountbooks/<int:accountbook_id>/history",
-         accountbook_history.AccountBookHistoryCreateView.as_view(), name="account_book_history_create"),
+         accountbook_history.AccountBookHistoryCreateView.as_view(), name="accountbooks_history_create"),
     path("accountbooks/<int:accountbook_id>/history/<int:accountbook_history_id>",
          accountbook_history.AccountBookHistoryDetailView.as_view(), name="account_book_history_detail"),
     path("accountbooks/<int:accountbook_id>/history/<int:accountbook_history_id>/restore",
