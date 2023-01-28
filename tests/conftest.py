@@ -39,3 +39,8 @@ def member_on_login(member_on):
     )
 
     return new_session
+
+
+@pytest.fixture
+def auth_header(member_on_login):
+    return {"HTTP_ACCESS_TOKEN": member_on_login.token}
