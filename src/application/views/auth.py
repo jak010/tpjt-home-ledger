@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..libs import permission
-
 from ..libs import utils
 from ..service import member_service
 
@@ -30,11 +29,12 @@ class LoginView(APIView):
         )
 
         new_session = member_service.save_session(
-            token=utils.generate_token(member=member),
+            token=utils.generate_token(email=member.email),
             member=member
         )
 
         return Response(
+            status=201,
             data={
                 'access_token': new_session.token,
                 'expire_time': new_session.expire_time,

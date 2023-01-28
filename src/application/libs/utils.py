@@ -12,7 +12,7 @@ from django.conf import settings
 from ..exceptions import member_exception
 
 if TYPE_CHECKING:
-    from ..orm.member import Member
+    pass
 
 
 def generate_bcrypt_hash(password) -> str:
@@ -35,12 +35,12 @@ def datetime_to_epoch(day) -> int:
     return int(time.mktime(_datetime.timetuple()))
 
 
-def generate_token(member: Member) -> str:
+def generate_token(email: str) -> str:
     """ jwt 토큰 생성하기 """
     return jwt.encode(
         payload={
             'session_id': generate_session_id(),
-            'email': member.email,
+            'email': email,
             'exp': datetime_to_epoch(day=1),
             'iss': datetime_to_epoch(day=2),
         },

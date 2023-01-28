@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from ..exceptions import member_exception
 
 
-class AccountBookView(APIView):
+class AccountsBookView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
     class InputSerializer(serializers.Serializer):
