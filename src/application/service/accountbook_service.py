@@ -82,7 +82,7 @@ def get_account_book_with_history(accountbook_id: int):
 
 
 def create_account_book_history(
-        amount: str,
+        amount: int,
         memo: str,
         account_book: AccountBook) -> AccountBookHistory:
     """ 가계부 내역 생성하기 """
