@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import Optional, NoReturn
 from datetime import datetime
+from typing import Optional
 
+import pytz
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 
@@ -13,6 +14,8 @@ from ..orm.member_session import MemberSession
 # from ..orm.member_session import MemberSession
 
 Member = get_user_model()
+
+UTCNOW = datetime.now(tz=pytz.UTC)
 
 
 def create_member(email: str, password: str) -> Member:
@@ -42,7 +45,7 @@ def login(email: str, password: str) -> Member:
     if member.is_active == define.Member.INACTIVE_CODE:
         raise member_exception.InActiveMember()
 
-    member.last_login = datetime.now()
+    member.last_login = UTCNOW
     member.save()
 
     return member
