@@ -7,7 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..libs import permission
-from ..service import accountbook_service,member_service
+from ..service import accountbook_service, member_service
+
+from ..service.member_service import MemberService
+from ..service.member_session_service import MemberSessionService
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
@@ -15,18 +18,21 @@ if TYPE_CHECKING:
 
 
 class AccountsBookView(APIView):
+    member_service = MemberService()
+    member_session_service = MemberSessionService()
+
     permission_classes = (permission.AccessTokenCheck,)
 
     class InputSerializer(serializers.Serializer):
         name = serializers.CharField(max_length=128)
         description = serializers.CharField(max_length=256)
 
-    def get(self,request) -> APIResponse[
+    def get(self, request) -> APIResponse[
         Response,
         member_exception.InvalidCredential
     ]:
         """ 가계부 목록조회 """
-        member = member_service.get_member_by_session(
+        member = self.member_service.get_member_by_session(
             session=self.headers['member_session']
         )
 
@@ -34,7 +40,7 @@ class AccountsBookView(APIView):
 
         return Response(data=account_books)
 
-    def post(self,request) -> APIResponse[
+    def post(self, request) -> APIResponse[
         Response,
         member_exception.InvalidCredential
     ]:
@@ -42,7 +48,7 @@ class AccountsBookView(APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        member = member_service.get_member_by_session(
+        member = self.member_service.get_member_by_session(
             session=self.headers['member_session']
         )
 
@@ -58,7 +64,7 @@ class AccountsBookView(APIView):
 class AccountBookDetailView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
-    def get(self,request,accountbook_id) -> APIResponse[
+    def get(self, request, accountbook_id) -> APIResponse[
         Response
     ]:
         """ 가계부 상세보기 """

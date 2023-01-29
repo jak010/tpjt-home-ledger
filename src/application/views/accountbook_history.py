@@ -10,10 +10,9 @@ from rest_framework.views import APIView
 from ..exceptions import accountbook_exception
 from ..libs import permission
 from ..libs.define import AccountHistoryStatus
-from ..service import (
-    member_service,
-    accountbook_service
-)
+from ..service import accountbook_service
+from ..service.member_service import MemberService
+from ..service.member_session_service import MemberSessionService
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
@@ -23,10 +22,10 @@ class AccountBookHistoryCreateView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
     class InputSerializer(serializers.Serializer):
-        memo = serializers.CharField(max_length=256,required=True)
-        amount = serializers.CharField(max_length=128,required=True)
+        memo = serializers.CharField(max_length=256, required=True)
+        amount = serializers.CharField(max_length=128, required=True)
 
-    def post(self,request,accountbook_id) -> APIResponse[
+    def post(self, request, accountbook_id) -> APIResponse[
         Response,
         accountbook_exception.DoesNotExsitAccountBook,
     ]:
@@ -51,10 +50,10 @@ class AccountBookHistoryDetailView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
     class InputSerializer(serializers.Serializer):
-        memo = serializers.CharField(max_length=256,required=True)
+        memo = serializers.CharField(max_length=256, required=True)
         amount = serializers.IntegerField(required=True)
 
-    def put(self,request,accountbook_id,accountbook_history_id) -> APIResponse[
+    def put(self, request, accountbook_id, accountbook_history_id) -> APIResponse[
         Response,
         accountbook_exception.DoesNotExsitAccountBook,
         accountbook_exception.DoesNotExsitAccountHistoryBook,
@@ -81,7 +80,7 @@ class AccountBookHistoryDetailView(APIView):
 
         return Response(status=200)
 
-    def delete(self,request,accountbook_id,accountbook_history_id) -> APIResponse[
+    def delete(self, request, accountbook_id, accountbook_history_id) -> APIResponse[
         Response,
         accountbook_exception.DoesNotExsitAccountHistoryBook,
         accountbook_exception.InActivedAccountbookHistory
@@ -102,13 +101,16 @@ class AccountBookHistoryDetailView(APIView):
 
 
 class AccountBookHistoryRestoreView(APIView):
+    member_service = MemberService()
+    member_session_service = MemberSessionService()
+
     permission_classes = (permission.AccessTokenCheck,)
 
-    def put(self,request,accountbook_id,accountbook_history_id) -> APIResponse[Response]:
+    def put(self, request, accountbook_id, accountbook_history_id) -> APIResponse[Response]:
         account_book = accountbook_service.get_account_book_with_pk(
             reference_id=accountbook_id
         )
-        member = member_service.get_member_by_session(
+        member = self.member_service.get_member_by_session(
             session=self.headers['member_session']
         )
 
