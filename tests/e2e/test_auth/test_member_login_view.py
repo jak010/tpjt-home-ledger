@@ -35,3 +35,12 @@ def test_member_login_api_with_invalid_password(client, member_on):
     )
 
     assert response.status_code == 400
+
+
+@pytest.mark.django_db
+def test_member_login_api_with_without_data(client, member_on):
+    response = client.post(
+        auth_login_view,
+    )
+
+    assert response.status_code == 400
