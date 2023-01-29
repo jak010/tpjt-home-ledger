@@ -10,7 +10,7 @@ from ..libs import utils
 
 class AccessTokenCheck(permissions.BasePermission):
 
-    def has_permission(self, request, view):
+    def has_permission(self,request,view):
         access_token = request.META.get("HTTP_ACCESS_TOKEN")
 
         if access_token is None:

@@ -10,8 +10,8 @@ def test_member_create_api(client):
     response = client.post(
         member_view,
         data={
-            'email': "test9998@test.com",
-            'password': '1234'
+            'email':"test9998@test.com",
+            'password':'1234'
         }
     )
 
@@ -19,12 +19,12 @@ def test_member_create_api(client):
 
 
 @pytest.mark.django_db
-def test_member_create_api_with_duplicate_check(client, member_on):
+def test_member_create_api_with_duplicate_check(client,member_on):
     response = client.post(
         member_view,
         data={
-            'email': "test9999@test.com",
-            'password': '1234'
+            'email':"test9999@test.com",
+            'password':'1234'
         }
     )
 

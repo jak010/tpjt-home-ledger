@@ -18,7 +18,7 @@ class MemberView(APIView):
         email = serializers.EmailField()
         password = serializers.CharField()
 
-    def post(self, *args, **kwags) -> APIResponse[
+    def post(self,*args,**kwags) -> APIResponse[
         Response,
         AlreadyExistMember
     ]:

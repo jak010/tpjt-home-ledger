@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-from typing import List, Union
+from typing import Union
 
-from rest_framework.response import Response
 from rest_framework.exceptions import APIException
+from rest_framework.response import Response
 
-from typing import TypeVar, Generic, Union, Final
-
-APIResponse = Union[Response, APIException]
+APIResponse = Union[Response,APIException]

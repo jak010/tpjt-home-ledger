@@ -2,13 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers
 
 from ..libs import permission
-
-from ..service import accountbook_service, member_service
+from ..service import accountbook_service,member_service
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
@@ -22,7 +21,7 @@ class AccountsBookView(APIView):
         name = serializers.CharField(max_length=128)
         description = serializers.CharField(max_length=256)
 
-    def get(self, request) -> APIResponse[
+    def get(self,request) -> APIResponse[
         Response,
         member_exception.InvalidCredential
     ]:
@@ -35,7 +34,7 @@ class AccountsBookView(APIView):
 
         return Response(data=account_books)
 
-    def post(self, request) -> APIResponse[
+    def post(self,request) -> APIResponse[
         Response,
         member_exception.InvalidCredential
     ]:
@@ -59,7 +58,7 @@ class AccountsBookView(APIView):
 class AccountBookDetailView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
-    def get(self, request, accountbook_id) -> APIResponse[
+    def get(self,request,accountbook_id) -> APIResponse[
         Response
     ]:
         """ 가계부 상세보기 """

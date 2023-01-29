@@ -6,12 +6,12 @@ auth_login_view = reverse("application:login")
 
 
 @pytest.mark.django_db
-def test_member_login_api(client, member_on):
+def test_member_login_api(client,member_on):
     response = client.post(
         auth_login_view,
         data={
-            'email': member_on.email,
-            'password': '1234'
+            'email':member_on.email,
+            'password':'1234'
         }
     )
 
@@ -25,12 +25,12 @@ def test_member_login_api(client, member_on):
 
 
 @pytest.mark.django_db
-def test_member_login_api_with_fail(client, member_on):
+def test_member_login_api_with_fail(client,member_on):
     response = client.post(
         auth_login_view,
         data={
-            'email': member_on.email,
-            'password': '12345'
+            'email':member_on.email,
+            'password':'12345'
         }
     )
 

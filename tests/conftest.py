@@ -11,7 +11,7 @@ def django_db_setup():
 
 
 @pytest.fixture
-def db_no_rollback(request, django_db_setup, django_db_blocker):
+def db_no_rollback(request,django_db_setup,django_db_blocker):
     django_db_blocker.unblock()
     request.addfinalizer(django_db_blocker.restore)
 
@@ -43,4 +43,4 @@ def member_on_login(member_on):
 
 @pytest.fixture
 def auth_header(member_on_login):
-    return {"HTTP_ACCESS_TOKEN": member_on_login.token}
+    return {"HTTP_ACCESS_TOKEN":member_on_login.token}

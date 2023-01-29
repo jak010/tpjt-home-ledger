@@ -14,7 +14,7 @@ class LoginView(APIView):
         email = serializers.EmailField(required=True)
         password = serializers.CharField(required=True)
 
-    def post(self, request):
+    def post(self,request):
         """ token 생성하기 """
         # email과 패스워드로 가입된 유저인지 검증
         # 가입된 유저이면 토큰을 생성함
@@ -36,9 +36,9 @@ class LoginView(APIView):
         return Response(
             status=201,
             data={
-                'access_token': new_session.token,
-                'expire_time': new_session.expire_time,
-                'iat_time': new_session.iat_time
+                'access_token':new_session.token,
+                'expire_time':new_session.expire_time,
+                'iat_time':new_session.iat_time
             }
         )
 
@@ -46,7 +46,7 @@ class LoginView(APIView):
 class LogOutView(APIView):
     permission_classes = (permission.AccessTokenCheck,)
 
-    def delete(self, request):
+    def delete(self,request):
         member_session = self.headers['member_session']
 
         member_session.delete()
