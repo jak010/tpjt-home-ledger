@@ -16,10 +16,10 @@ if TYPE_CHECKING:
 
 
 def generate_bcrypt_hash(password) -> str:
-    return bcrypt.hashpw(password.encode(),bcrypt.gensalt()).decode()
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 
-def check_password(input_password: str,save_password: str) -> bool:
+def check_password(input_password: str, save_password: str) -> bool:
     return bcrypt.checkpw(
         input_password.encode("utf8"),
         save_password.encode("utf8")
@@ -39,10 +39,10 @@ def generate_token(email: str) -> str:
     """ jwt 토큰 생성하기 """
     return jwt.encode(
         payload={
-            'session_id':generate_session_id(),
-            'email':email,
-            'exp':datetime_to_epoch(day=1),
-            'iss':datetime_to_epoch(day=2),
+            'session_id': generate_session_id(),
+            'email': email,
+            'exp': datetime_to_epoch(day=1),
+            'iss': datetime_to_epoch(day=2),
         },
         key=settings.SECRET_KEY,
         algorithm='HS256'

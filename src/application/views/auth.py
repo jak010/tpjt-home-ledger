@@ -40,9 +40,9 @@ class LoginView(APIView):
         return Response(
             status=201,
             data={
-                'access_token':new_session.token,
-                'expire_time':new_session.expire_time,
-                'iat_time':new_session.iat_time
+                'access_token': new_session.token,
+                'expire_time': new_session.expire_time,
+                'iat_time': new_session.iat_time
             }
         )
 

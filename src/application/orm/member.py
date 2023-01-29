@@ -3,12 +3,7 @@ from __future__ import annotations
 from django.contrib.auth.models import (
     AbstractBaseUser as _AbstractBaseUser, BaseUserManager
 )
-
-from config.types import DjangoModel
-from django.db import models, IntegrityError
-
-from ..exceptions import member_exception
-from ..libs import utils
+from django.db import models
 
 
 class Member(_AbstractBaseUser):

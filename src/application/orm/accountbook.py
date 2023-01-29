@@ -9,7 +9,7 @@ Member = get_user_model()
 class AccountBook(models.Model):
     reference_id = models.AutoField(primary_key=True)
 
-    author = models.ForeignKey(Member,on_delete=models.SET_NULL,null=True)
+    author = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=256)
 
@@ -24,8 +24,8 @@ class AccountBook(models.Model):
 
 class AccountBookHistory(models.Model):
     reference_id = models.AutoField(primary_key=True)
-    account_book = models.ForeignKey(AccountBook,related_name='history',
-                                     on_delete=models.SET_NULL,null=True)
+    account_book = models.ForeignKey(AccountBook, related_name='history',
+                                     on_delete=models.SET_NULL, null=True)
     is_active = models.BooleanField(default=1)
 
     memo = models.CharField(max_length=128)

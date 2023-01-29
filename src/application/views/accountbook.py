@@ -7,8 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..libs import permission
-from ..service import accountbook_service, member_service
-
+from ..service import accountbook_service
 from ..service.member_service import MemberService
 from ..service.member_session_service import MemberSessionService
 

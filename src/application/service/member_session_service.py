@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, Generic, TYPE_CHECKING, TypeVar
+from typing import Optional
 
 import pytz
 from django.contrib.auth import get_user_model
-from django.db.utils import IntegrityError
 
 from ..exceptions import member_exception
-from ..libs import define, utils
+from ..libs import utils
 from ..orm.member_session import MemberSession
-
-from config.types import DjangoModel
 
 Member: _MeberModel = get_user_model()
 
