@@ -17,8 +17,8 @@ class MemberView(APIView):
     member_service = MemberService()
 
     class InputSerializer(serializers.Serializer):
-        email = serializers.EmailField()
-        password = serializers.CharField()
+        email = serializers.EmailField(required=True)
+        password = serializers.CharField(required=True)
 
     def post(self, *args, **kwags) -> APIResponse[
         Response,

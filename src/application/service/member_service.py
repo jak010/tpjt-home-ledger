@@ -7,6 +7,8 @@ import pytz
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 
+from rest_framework import exceptions
+
 from ..exceptions import member_exception
 from ..libs import define, utils
 from ..orm.member_session import MemberSession
@@ -22,12 +24,23 @@ UTCNOW = datetime.now(tz=pytz.UTC)
 class MemberService:
 
     def __init__(self):
-        self.model: MemberModel = Member
+        self.model: _MeberModel = Member
 
     def get_member_by_id(self, reference_id) -> Member:
-        return Member.objects.get(
-            id=reference_id
-        )
+        try:
+            member = self.model.manager.get(id=reference_id)
+        except _MeberModel.DoesNotExsit:
+            raise member_exception.InvalidCredential()
+
+        return member
+
+    def get_member_by_email(self, email) -> Member:
+        try:
+            member = self.model.manager.get(email=email)
+        except _MeberModel.DoesNotExsit:
+            raise member_exception.InvalidCredential()
+
+        return member
 
     def create_member(self, email: str, password: str) -> Member:
         """ 멤버 생성하기 """
@@ -44,10 +57,7 @@ class MemberService:
 
     def login(self, email: str, password: str) -> Member:
         """ 멤버 로그인 """
-        try:
-            member = self.model.manager.get(email=email)
-        except self.model.DoesNotExist:
-            raise member_exception.InvalidCredential()
+        member = self.get_member_by_email(email=email)
 
         if not utils.check_password(password, member.password):
             raise member_exception.InvalidCredential()
@@ -67,7 +77,7 @@ class MemberService:
             member = Member.manager.get(
                 email=token['email']
             )
-        except Member.DoesNotExist:
+        except _MeberModel.DoesNotExist:
             raise member_exception.InvalidCredential()
 
         return member

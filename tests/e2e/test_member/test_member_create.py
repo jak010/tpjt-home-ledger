@@ -10,8 +10,8 @@ def test_member_create_api(client):
     response = client.post(
         member_view,
         data={
-            'email':"test9998@test.com",
-            'password':'1234'
+            'email': "test9998@test.com",
+            'password': '1234'
         }
     )
 
@@ -19,12 +19,12 @@ def test_member_create_api(client):
 
 
 @pytest.mark.django_db
-def test_member_create_api_with_duplicate_check(client,member_on):
+def test_member_create_api_with_duplicate_check(client, member_on):
     response = client.post(
         member_view,
         data={
-            'email':"test9999@test.com",
-            'password':'1234'
+            'email': "test9999@test.com",
+            'password': '1234'
         }
     )
 
@@ -32,3 +32,10 @@ def test_member_create_api_with_duplicate_check(client,member_on):
 
     assert response.status_code == 200
     assert "20001, 이미 등록된 멤버가 존재합니다." in result['detail']
+
+
+@pytest.mark.django_db
+def test_member_create_api_with_without_data(client):
+    response = client.post(member_view)
+
+    assert response.status_code == 400
