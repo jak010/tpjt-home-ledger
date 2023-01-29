@@ -14,9 +14,9 @@ def create_accountbooks(member_on):
 
 
 @pytest.mark.django_db
-def test_accountsbooks_retrieve_api(client,auth_header,create_accountbooks):
-    view = reverse("application:accountbooks_detail",kwargs={
-        'accountbook_id':int(create_accountbooks.reference_id)
+def test_accountsbooks_retrieve_api(client, auth_header, create_accountbooks):
+    view = reverse("application:accountbooks_detail", kwargs={
+        'accountbook_id': int(create_accountbooks.reference_id)
     })
 
     response = client.get(

@@ -1,5 +1,4 @@
 import pytest
-
 from django.shortcuts import reverse
 
 from application.service import accountbook_service
@@ -15,7 +14,7 @@ def accountbook(member_on):
 
 
 @pytest.fixture
-def accountbook_history(member_on,accountbook):
+def accountbook_history(member_on, accountbook):
     accountbook_history = accountbook_service.create_account_book_history(
         amount=1000,
         memo="test",
@@ -27,10 +26,10 @@ def accountbook_history(member_on,accountbook):
 
 
 @pytest.mark.django_db
-def test_accountsbooks_history_restore_api(client,auth_header,accountbook,accountbook_history):
-    accountbooks_history_restore_view = reverse("application:accountbook_history_restore",kwargs={
-        'accountbook_id':accountbook.reference_id,
-        'accountbook_history_id':accountbook_history.reference_id
+def test_accountsbooks_history_restore_api(client, auth_header, accountbook, accountbook_history):
+    accountbooks_history_restore_view = reverse("application:accountbook_history_restore", kwargs={
+        'accountbook_id': accountbook.reference_id,
+        'accountbook_history_id': accountbook_history.reference_id
     })
 
     response = client.put(
