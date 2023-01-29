@@ -2,7 +2,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.db.utils import DataError
 
-from application.service.member_service import MemberService
+from application.domain.service.member_service import MemberService
 
 
 @pytest.mark.django_db

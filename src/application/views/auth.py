@@ -4,10 +4,10 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..libs import permission
+from application.domain.service.member_service import MemberService
+from application.domain.service.member_session_service import MemberSessionService
+from config import permission
 from ..libs import utils
-from ..service.member_service import MemberService
-from ..service.member_session_service import MemberSessionService
 
 
 class LoginView(APIView):

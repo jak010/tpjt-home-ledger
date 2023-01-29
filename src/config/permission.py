@@ -3,8 +3,8 @@ from __future__ import annotations
 from rest_framework import exceptions
 from rest_framework import permissions
 
-from ..libs import utils
-from ..service.member_session_service import MemberSessionService
+from application.libs import utils
+from application.domain.service.member_session_service import MemberSessionService
 
 
 class AccessTokenCheck(permissions.BasePermission):

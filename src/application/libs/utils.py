@@ -9,7 +9,7 @@ import bcrypt
 import jwt
 from django.conf import settings
 
-from .. import errors
+from application.domain import errors
 
 if TYPE_CHECKING:
     pass

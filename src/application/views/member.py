@@ -6,8 +6,8 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..exceptions.member_exception import AlreadyExistMember
-from ..service.member_service import MemberService
+from application.domain.exceptions.member_exception import AlreadyExistMember
+from application.domain.service.member_service import MemberService
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse

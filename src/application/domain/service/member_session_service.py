@@ -6,12 +6,12 @@ from typing import Optional, TYPE_CHECKING
 import pytz
 from django.contrib.auth import get_user_model
 
-from ..exceptions import member_exception
-from ..libs import utils
-from ..orm.member_session import MemberSession
+from application.domain.exceptions import member_exception
+from application.domain.orm.member_session import MemberSession
+from application.libs import utils
 
 if TYPE_CHECKING:
-    from ..orm.member import Member as _MeberModel
+    from application.domain.orm.member import Member as _MeberModel
 
 Member: _MeberModel = get_user_model()
 

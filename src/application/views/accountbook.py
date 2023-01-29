@@ -6,14 +6,14 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..libs import permission
-from ..service import accountbook_service
-from ..service.member_service import MemberService
-from ..service.member_session_service import MemberSessionService
+from config import permission
+from ..domain.service import accountbook_service
+from application.domain.service.member_service import MemberService
+from application.domain.service.member_session_service import MemberSessionService
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
-    from ..exceptions import member_exception
+    from application.domain.exceptions import member_exception
 
 
 class AccountsBookView(APIView):

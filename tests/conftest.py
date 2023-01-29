@@ -1,7 +1,7 @@
 import pytest
 
-from application.service.member_service import MemberService
-from application.service.member_session_service import MemberSessionService
+from application.domain.service.member_service import MemberService
+from application.domain.service.member_session_service import MemberSessionService
 from application.libs import utils
 
 
@@ -54,4 +54,4 @@ def member_on_login(member_on, member_service, member_session_service):
 
 @pytest.fixture
 def auth_header(member_on_login):
-    return {"HTTP_ACCESS_TOKEN":member_on_login.token}
+    return {"HTTP_ACCESS_TOKEN": member_on_login.token}

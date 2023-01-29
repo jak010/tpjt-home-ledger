@@ -1,9 +1,9 @@
 import pytest
 from django.db.utils import IntegrityError
 
-from application import errors
+from application.domain import errors
 
-from src.application.libs import utils
+from application.libs import utils
 
 
 @pytest.mark.django_db

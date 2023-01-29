@@ -1,7 +1,7 @@
 import pytest
 from django.shortcuts import reverse
 
-from application.service import accountbook_service
+from application.domain.service import accountbook_service
 
 
 @pytest.fixture
