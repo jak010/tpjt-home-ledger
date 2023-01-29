@@ -42,6 +42,11 @@ class MemberService:
 
         return member
 
+    def get_member_by_session(self, session: MemberSession) -> Member:
+        token = utils.decode_token(session.token)
+
+        return self.get_member_by_email(email=token['email'])
+
     def create_member(self, email: str, password: str) -> Member:
         """ 멤버 생성하기 """
         try:
@@ -67,17 +72,5 @@ class MemberService:
 
         member.last_login = UTCNOW
         member.save()
-
-        return member
-
-    def get_member_by_session(self, session: MemberSession) -> Member:
-        token = utils.decode_token(session.token)
-
-        try:
-            member = Member.manager.get(
-                email=token['email']
-            )
-        except _MeberModel.DoesNotExist:
-            raise member_exception.InvalidCredential()
 
         return member
