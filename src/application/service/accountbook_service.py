@@ -95,11 +95,12 @@ def create_account_book_history(
     return new_account_book_history
 
 
-def get_acoount_book_history(reference_id: int) -> AccountBookHistory:
+def get_acoount_book_history(accountbook, accountbook_history_id: int) -> AccountBookHistory:
     """ 가계부 내역 찾기 """
     try:
         account_book_history = AccountBookHistory.objects.get(
-            reference_id=reference_id
+            reference_id=accountbook_history_id,
+            account_book=accountbook
         )
     except AccountBookHistory.DoesNotExist:
         raise accountbook_exception.DoesNotExsitAccountHistoryBook()

@@ -52,7 +52,7 @@ class AccountBookHistoryDetailView(APIView):
 
     class InputSerializer(serializers.Serializer):
         memo = serializers.CharField(max_length=256, required=True)
-        amount = serializers.CharField(max_length=128, required=True)
+        amount = serializers.IntegerField(required=True)
 
     def put(self, request, accountbook_id, accountbook_history_id) -> APIResponse[
         Response,
@@ -64,16 +64,17 @@ class AccountBookHistoryDetailView(APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        account_book = accountbook_service.get_account_book_with_pk(
+        accountbook = accountbook_service.get_account_book_with_pk(
             reference_id=accountbook_id
         )
 
-        account_book_history = accountbook_service.get_acoount_book_history(
-            reference_id=accountbook_history_id
+        accountbook_history = accountbook_service.get_acoount_book_history(
+            accountbook_history_id=accountbook_history_id,
+            accountbook=accountbook,
         )
 
         accountbook_service.update_account_book_history(
-            account_book_history=account_book_history,
+            account_book_history=accountbook_history,
             amount=serializer.validated_data['amount'],
             memo=serializer.validated_data['memo']
         )
@@ -86,12 +87,13 @@ class AccountBookHistoryDetailView(APIView):
         accountbook_exception.InActivedAccountbookHistory
     ]:
         """ 가계부 내역 삭제하기 """
-        account_book = accountbook_service.get_account_book_with_pk(
+        accountbook = accountbook_service.get_account_book_with_pk(
             reference_id=accountbook_id
         )
 
         account_book_history = accountbook_service.get_acoount_book_history(
-            reference_id=accountbook_history_id
+            accountbook_history_id=accountbook_history_id,
+            accountbook=accountbook
         )
         account_book_history.is_active = 0
         account_book_history.save()

@@ -22,10 +22,10 @@ def accountbook_history(member_on, accountbook):
         account_book=accountbook
     )
 
-# TODO: 실패하는 테스트 나중에 수정하자
+
 @pytest.mark.django_db
 def test_accountsbooks_history_update_api(client, auth_header, accountbook, accountbook_history):
-    accountbooks_history_update_view = reverse("application:account_book_history_detail", kwargs={
+    accountbooks_history_update_view = reverse("application:accountbook_history_detail", kwargs={
         'accountbook_id': accountbook.reference_id,
         'accountbook_history_id': accountbook_history.reference_id
     })
@@ -36,6 +36,7 @@ def test_accountsbooks_history_update_api(client, auth_header, accountbook, acco
             'amount': 1000,
             'memo': "test accountbooks history",
         },
+        content_type="application/json",  # HACK: 처리 안해주면 415 Status 발생
         **auth_header
     )
 
