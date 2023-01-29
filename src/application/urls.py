@@ -29,5 +29,5 @@ urlpatterns = [
     path("accountbooks/<int:accountbook_id>/history/<int:accountbook_history_id>",
          accountbook_history.AccountBookHistoryDetailView.as_view(), name="accountbook_history_detail"),
     path("accountbooks/<int:accountbook_id>/history/<int:accountbook_history_id>/restore",
-         accountbook_history.AccountBookHistoryRestoreView.as_view(), name="account_book_history_restore")
+         accountbook_history.AccountBookHistoryRestoreView.as_view(), name="accountbook_history_restore")
 ]
