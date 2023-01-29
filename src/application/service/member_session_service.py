@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 import pytz
 from django.contrib.auth import get_user_model
@@ -9,6 +9,9 @@ from django.contrib.auth import get_user_model
 from ..exceptions import member_exception
 from ..libs import utils
 from ..orm.member_session import MemberSession
+
+if TYPE_CHECKING:
+    from ..orm.member import Member as _MeberModel
 
 Member: _MeberModel = get_user_model()
 
@@ -18,13 +21,13 @@ UTCNOW = datetime.now(tz=pytz.UTC)
 class MemberSessionService:
 
     def __init__(self):
-        self.model: MemberSession = Member
+        self.model = MemberSession
 
     def save_session(self, token: str, member: Member) -> MemberSession:
         """ token 정보 저장하기 """
         decode_token = utils.decode_token(token)
 
-        new_session = MemberSession.objects.create(
+        new_session = self.model.objects.create(
             session_id=decode_token['session_id'],
             token=token,
             member=member,
@@ -36,7 +39,7 @@ class MemberSessionService:
     def get_session(self, session_id) -> Optional[MemberSession]:
         """ session 정보 얻기 """
         try:
-            member_session = MemberSession.objects.get(
+            member_session = self.model.objects.get(
                 session_id=session_id
             )
         except MemberSession.DoesNotExist:

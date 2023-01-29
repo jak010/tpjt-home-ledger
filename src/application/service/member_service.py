@@ -7,8 +7,7 @@ import pytz
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 
-from rest_framework import exceptions
-
+from .. import errors
 from ..exceptions import member_exception
 from ..libs import define, utils
 from ..orm.member_session import MemberSession
@@ -43,7 +42,10 @@ class MemberService:
         return member
 
     def get_member_by_session(self, session: MemberSession) -> Member:
-        token = utils.decode_token(session.token)
+        try:
+            token = utils.decode_token(session.token)
+        except errors.TokenDecodeError:
+            raise member_exception.InvalidAccessToken()
 
         return self.get_member_by_email(email=token['email'])
 

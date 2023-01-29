@@ -9,7 +9,7 @@ import bcrypt
 import jwt
 from django.conf import settings
 
-from ..exceptions import member_exception
+from .. import errors
 
 if TYPE_CHECKING:
     pass
@@ -58,6 +58,6 @@ def decode_token(token) -> dict:
             algorithms='HS256'
         )
     except Exception:  # TODO: Token Deode 시 Exception 처리 명시하기
-        raise member_exception.InvalidAccessToken()
+        raise errors.TokenDecodeError()
 
     return token
