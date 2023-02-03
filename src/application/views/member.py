@@ -14,8 +14,6 @@ if TYPE_CHECKING:
 
 
 class MemberView(APIView):
-    member_service = MemberService()
-
     class InputSerializer(serializers.Serializer):
         email = serializers.EmailField(required=True)
         password = serializers.CharField(required=True)
@@ -34,3 +32,17 @@ class MemberView(APIView):
         )
 
         return Response(status=201)
+
+
+class MemberDetailView(APIView):
+    service = MemberService()
+
+    def get(self, member_id: int):
+        member = self.service.get_member_by_id(reference_id=member_id)
+
+        return Response(
+            status=200,
+            data={
+                'member_id': member.id
+            }
+        )

@@ -1,79 +1,46 @@
 from __future__ import annotations
 
-from datetime import datetime
+from functools import cached_property
 from typing import TYPE_CHECKING
 
-import pytz
-from django.contrib.auth import get_user_model
-from django.db.utils import IntegrityError
-
-from application.domain import errors
-from application.domain.exceptions import member_exception
 from application.domain.orm.member_session import MemberSession
-from application.libs import define
-from application.libs import utils
+from ..repository.member_repository import MemberRepository
+from ..usecases.MemberLogin import MemberLogin
 
 if TYPE_CHECKING:
-    from application.domain.orm.member import Member as _MeberModel
-
-Member: _MeberModel = get_user_model()
-
-UTCNOW = datetime.now(tz=pytz.UTC)
+    from application.domain.orm.member import Member
 
 
 class MemberService:
 
-    def __init__(self):
-        self.model: _MeberModel = Member
+    @cached_property
+    def repository(self) -> MemberRepository:
+        return MemberRepository()
 
-    def get_member_by_id(self, reference_id) -> Member:
-        try:
-            member = self.model.manager.get(id=reference_id)
-        except _MeberModel.DoesNotExsit:
-            raise member_exception.InvalidCredential()
+    def get_member_by_id(self, reference_id: int) -> Member:
+        return self.repository.get_member_by_pk(
+            reference_id=reference_id
+        )
 
-        return member
-
-    def get_member_by_email(self, email) -> Member:
-        try:
-            member = self.model.manager.get(email=email)
-        except _MeberModel.DoesNotExsit:
-            raise member_exception.InvalidCredential()
-
-        return member
+    def get_member_by_email(self, email: str) -> Member:
+        return self.repository.get_member_by_email(
+            member_email=email
+        )
 
     def get_member_by_session(self, session: MemberSession) -> Member:
-        try:
-            token = utils.decode_token(session.token)
-        except errors.TokenDecodeError:
-            raise member_exception.InvalidAccessToken()
+        return self.repository.get_member_by_session(session=session)
 
-        return self.get_member_by_email(email=token['email'])
-
-    def create_member(self, email: str, password: str) -> Member:
+    def register(self, email: str, password: str) -> Member:
         """ 멤버 생성하기 """
-        try:
-            member = self.model.manager.create(
-                email=email,
-                password=utils.generate_bcrypt_hash(password)
-            )
-            member.full_clean()
-        except IntegrityError:
-            raise member_exception.AlreadyExistMember()
+        return self.repository.add(
+            email=email,
+            password=password
+        )
 
-        return member
-
-    def login(self, email: str, password: str) -> Member:
+    def login(self, email: str, password: str):
         """ 멤버 로그인 """
-        member = self.get_member_by_email(email=email)
-
-        if not utils.check_password(password, member.password):
-            raise member_exception.InvalidCredential()
-
-        if member.is_active == define.Member.INACTIVE_CODE:
-            raise member_exception.InActiveMember()
-
-        member.last_login = UTCNOW
-        member.save()
-
-        return member
+        member_login = MemberLogin(
+            email=email,
+            password=password
+        )
+        member_login.process()

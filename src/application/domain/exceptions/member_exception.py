@@ -3,6 +3,11 @@ from rest_framework.exceptions import APIException
 from . import ApiCodeEnum
 
 
+class NotExistsMember(APIException):
+    status_code = 404
+    default_detail = "멤버 정보를 찾을 수 없습니다."
+
+
 class AlreadyExistMember(APIException):
     status_code = 200
     default_detail = f"{ApiCodeEnum.MEMBER_DEUPLICATE.value}, 이미 등록된 멤버가 존재합니다."
