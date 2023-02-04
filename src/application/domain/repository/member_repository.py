@@ -7,6 +7,7 @@ from application.libs import (
     utils
 )
 from ..orm.member import Member
+from django.db.utils import IntegrityError
 
 
 class MemberRepository:
@@ -36,5 +37,13 @@ class MemberRepository:
         return self.get_member_by_email(member_email=token['email'])
 
     def add(self, email: str, password: str):
-        new_member = Member(email=email, passowrd=password)
-        new_member.save()
+        try:
+            new_member = Member(
+                email=email,
+                password=utils.generate_bcrypt_hash(password)
+            )
+            new_member.save()
+        except IntegrityError:
+            raise member_exception.AlreadyExistMember()
+
+        return new_member

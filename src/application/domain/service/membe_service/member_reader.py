@@ -4,14 +4,13 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from application.domain.orm.member_session import MemberSession
-from ..repository.member_repository import MemberRepository
-from ..usecases.MemberLogin import MemberLogin
+from application.domain.repository.member_repository import MemberRepository
 
 if TYPE_CHECKING:
     from application.domain.orm.member import Member
 
 
-class MemberService:
+class MemberReader:
 
     @cached_property
     def repository(self) -> MemberRepository:
@@ -29,18 +28,3 @@ class MemberService:
 
     def get_member_by_session(self, session: MemberSession) -> Member:
         return self.repository.get_member_by_session(session=session)
-
-    def register(self, email: str, password: str) -> Member:
-        """ 멤버 생성하기 """
-        return self.repository.add(
-            email=email,
-            password=password
-        )
-
-    def login(self, email: str, password: str):
-        """ 멤버 로그인 """
-        member_login = MemberLogin(
-            email=email,
-            password=password
-        )
-        member_login.process()

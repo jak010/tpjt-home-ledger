@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from application.domain.exceptions import accountbook_exception
-from application.domain.service.member_service import MemberService
+from application.domain.service.membe_service import MemberReader
 from application.domain.service.member_session_service import MemberSessionService
 from application.libs.define import AccountHistoryStatus
 from config import permission
@@ -101,7 +101,7 @@ class AccountBookHistoryDetailView(APIView):
 
 
 class AccountBookHistoryRestoreView(APIView):
-    member_service = MemberService()
+    member_reader_service = MemberReader()
     member_session_service = MemberSessionService()
 
     permission_classes = (permission.AccessTokenCheck,)
@@ -110,7 +110,7 @@ class AccountBookHistoryRestoreView(APIView):
         account_book = accountbook_service.get_account_book_with_pk(
             reference_id=accountbook_id
         )
-        member = self.member_service.get_member_by_session(
+        member = self.member_reader_service.get_member_by_session(
             session=self.headers['member_session']
         )
 

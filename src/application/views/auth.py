@@ -4,14 +4,13 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from application.domain.service.member_service import MemberService
+from application.domain.service.membe_service.member_login import MemberLogin
 from application.domain.service.member_session_service import MemberSessionService
 from config import permission
 from ..libs import utils
 
 
 class LoginView(APIView):
-    member_service = MemberService()
     member_session_service = MemberSessionService()
 
     class InputSerializer(serializers.Serializer):
@@ -27,10 +26,11 @@ class LoginView(APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        member = self.member_service.login(
+        member_login = MemberLogin(
             email=serializer.validated_data['email'],
             password=serializer.validated_data['password']
         )
+        member = member_login.process()
 
         new_session = self.member_session_service.save_session(
             token=utils.generate_token(email=member.email),
@@ -48,8 +48,6 @@ class LoginView(APIView):
 
 
 class LogOutView(APIView):
-    member_service = MemberService()
-
     permission_classes = (permission.AccessTokenCheck,)
 
     def delete(self, request):

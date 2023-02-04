@@ -34,6 +34,8 @@ def test_member_login_api_with_invalid_password(client, member_on):
         }
     )
 
+    print(response.json())
+
     assert response.status_code == 400
 
 

@@ -1,6 +1,6 @@
 import pytest
 
-from application.domain.service.member_service import MemberService
+from application.domain.service.membe_service import MemberCreate, MemberLogin
 from application.domain.service.member_session_service import MemberSessionService
 from application.libs import utils
 
@@ -18,8 +18,16 @@ def db_no_rollback(request, django_db_setup, django_db_blocker):
 
 
 @pytest.fixture
-def member_service():
-    return MemberService()
+def member_on():
+    return MemberCreate().process(
+        email="test9999@test.com",
+        password="1234"
+    )
+
+
+@pytest.fixture
+def member_login_serivce():
+    return MemberLogin
 
 
 @pytest.fixture
@@ -28,21 +36,11 @@ def member_session_service():
 
 
 @pytest.fixture
-def member_on(member_service):
-    member = member_service.create_member(
-        email="test9999@test.com",
-        password="1234"
-    )
-
-    return member
-
-
-@pytest.fixture
-def member_on_login(member_on, member_service, member_session_service):
-    member = member_service.login(
+def member_on_login(member_on, member_login_serivce, member_session_service):
+    member = member_login_serivce(
         email=member_on.email,
         password="1234"
-    )
+    ).process()
 
     new_session = member_session_service.save_session(
         token=utils.generate_token(email=member.email),

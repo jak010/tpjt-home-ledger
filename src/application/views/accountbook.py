@@ -6,10 +6,10 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config import permission
-from ..domain.service import accountbook_service
-from application.domain.service.member_service import MemberService
+from application.domain.service import accountbook_service
+from application.domain.service.membe_service import MemberReader
 from application.domain.service.member_session_service import MemberSessionService
+from config import permission
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class AccountsBookView(APIView):
-    member_service = MemberService()
+    member_reader_service = MemberReader()
     member_session_service = MemberSessionService()
 
     permission_classes = (permission.AccessTokenCheck,)
@@ -31,7 +31,7 @@ class AccountsBookView(APIView):
         member_exception.InvalidCredential
     ]:
         """ 가계부 목록조회 """
-        member = self.member_service.get_member_by_session(
+        member = self.member_reader_service.get_member_by_session(
             session=self.headers['member_session']
         )
 
@@ -47,7 +47,7 @@ class AccountsBookView(APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        member = self.member_service.get_member_by_session(
+        member = self.member_reader_service.get_member_by_session(
             session=self.headers['member_session']
         )
 

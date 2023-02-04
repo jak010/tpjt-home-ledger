@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from application.domain.exceptions.member_exception import AlreadyExistMember
-from application.domain.service.member_service import MemberService
+from application.domain.service.membe_service import MemberCreate
 
 if TYPE_CHECKING:
     from src.config.types import APIResponse
@@ -26,7 +26,7 @@ class MemberView(APIView):
         serializer = self.InputSerializer(data=self.request.POST)
         serializer.is_valid(raise_exception=True)
 
-        self.member_service.create_member(
+        MemberCreate().process(
             email=serializer.validated_data['email'],
             password=serializer.validated_data['password']
         )
@@ -35,7 +35,6 @@ class MemberView(APIView):
 
 
 class MemberDetailView(APIView):
-    service = MemberService()
 
     def get(self, member_id: int):
         member = self.service.get_member_by_id(reference_id=member_id)
